@@ -21,8 +21,7 @@ var Changes = exports;
 // store.getChangeset(changesetName)
 
 
-Changes.push = function(changes, set, user) {
-  user = user || 'anonymous';
+Changes.push = function(changes, set, user, cb) {
   var records = serializeChanges(changes, set, user);
   knex.table('changes').insert(records)
     .asCallback(function(err) {
