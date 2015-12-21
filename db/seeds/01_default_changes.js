@@ -15,10 +15,10 @@ var records = [
     timestamp: 1450636442328,
     user: "user-1"
   }
-]
+];
 
 exports.seed = function(knex, Promise) {
   return Promise.join(
-    knex('changes').insert(records);
+    knex('changes').insert(records)
   );
 };

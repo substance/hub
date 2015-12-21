@@ -8,13 +8,13 @@ Transport.requestHandler = function(req, ws) {
 		store.getChangeSet(req.set, function(err, data) {
 			if(err) return ws.send(JSON.stringify(err));
 			ws.send(data);
-		}
+		});
 	}
 };
 
-Transport.use = function(ws) {
+Transport.register = function(ws) {
   ws.on('message', function(msg) {
     var req = JSON.parse(msg);
     Transport.requestHandler(req, ws);
   });
-});
+};

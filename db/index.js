@@ -1,5 +1,4 @@
 var knex = require('./connect');
-var async = require("async");
 
 // Initialize knex connection
 // --------------
