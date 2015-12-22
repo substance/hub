@@ -1,17 +1,15 @@
 var Changes = require('./db').models.Changes;
 var Store = exports;
 
-Store.addChange = function(changeSetName, change, user) {
+Store.addChange = function(changeSetName, change, user, cb) {
   user = user || 'anonymous';
   if(!changeSetName) return new Error("You should provide set name");
-  Change.push(change, changeSetName, user, function(err) {
-    if(err) return err;
-  });
+  Changes.push(change, changeSetName, user, cb);
 };
 
 Store.getChangeSet = function(changeSetName, cb) {
   if(!changeSetName) return new Error("You should provide set name");
-  Change.get(changeSetName, function(err, result) {
+  Changes.get(changeSetName, function(err, result) {
     if(err) return cb(err);
     cb(null, JSON.stringify(result));
   });
