@@ -1,5 +1,6 @@
 # hub
-Experimental server for realtime collab
+
+Experimental server for realtime collab.
 
 On server:
 
@@ -7,6 +8,7 @@ run ```npm run seed``` and then ```npm run start```
 
 On client:
 
+```js
 var host = "ws://localhost:8080";
 var ws = new WebSocket(host);
 
@@ -16,8 +18,13 @@ ws.onmessage = function (event) {
 }
 
 ws.send('{"type":"add","set":"doc-15/master","data":{"a":"b","b":"c"}}');
-will print {status: 'ok'}
+```
 
+will print `{status: 'ok'}`.
+
+```js
 ws.send('{"type":"get","set":"doc-15/master"}');
+```
 
-will print array of objects {id:'doc-15/master', data: {...}}
+
+will print array of objects `{id:'doc-15/master', data: {...}}`.

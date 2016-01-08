@@ -1,6 +1,9 @@
 var store = require('./store');
 var Transport = exports;
 
+// Currently relies on web sockets but this could work with other
+// transport implementations too.
+
 Transport.requestHandler = function(req, ws) {
   if(req.type == 'add') {
     store.addChange(req.set, req.data, req.user, function(err, data){
