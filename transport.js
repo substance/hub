@@ -4,25 +4,25 @@ var Transport = exports;
 // Currently relies on web sockets but this could work with other
 // transport implementations too.
 
-Transport.requestHandler = function(req, ws) {
+Transport.requestHandler = function(req, hub) {
   if(req.type == 'add') {
-    store.addChange(req.set, req.data, req.user, function(err, data){
-      if(err) return ws.send(JSON.stringify(err));
-      ws.send('{"status":"ok"}');
+    store.addChange(hub.db, req.set, req.data, req.user, function(err, data) {
+      if(err) return hub.send(JSON.stringify(err));
+      hub.send('{"status":"ok"}');
     });
   } else if(req.type == 'get') {
-    store.getChangeSet(req.set, function(err, data) {
-      if(err) return ws.send(JSON.stringify(err));
-      ws.send(data);
+    store.getChangeSet(hub.db, req.set, function(err, data) {
+      if(err) return hub.send(JSON.stringify(err));
+      hub.send(data);
     });
   }
 };
 
-Transport.register = function(ws) {
-  ws.on('message', function(msg) {
+Transport.register = function(hub) {
+  hub.on('message', function(msg) {
     try {
       var req = JSON.parse(msg);
-      Transport.requestHandler(req, ws);
+      Transport.requestHandler(req, hub);
     }
     catch (err) {
       console.log(err);

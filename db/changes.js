@@ -1,12 +1,11 @@
-var knex = require('./connect');
 var _ = require('lodash');
 
 var Changes = exports;
 
-Changes.push = function(changes, set, user, cb) {
-  serializeChanges(changes, set, user, function(err, records) {
+Changes.push = function(db, changes, set, user, cb) {
+  serializeChanges(db, changes, set, user, function(err, records) {
     if(err) return cb(err);
-    knex.table('changes').insert(records)
+    db.table('changes').insert(records)
     .asCallback(function(err) {
       if(err) return cb(err);
       cb(null);
@@ -14,8 +13,8 @@ Changes.push = function(changes, set, user, cb) {
   });
 };
 
-Changes.get = function(changeSetName, cb) {
-  var query = knex('changes')
+Changes.get = function(db, changeSetName, cb) {
+  var query = db('changes')
                 .select('data', 'id')
                 .where('changeset', changeSetName)
                 .orderBy('pos', 'desc');
@@ -26,8 +25,8 @@ Changes.get = function(changeSetName, cb) {
   });
 };
 
-Changes.getSize = function(changeSetName, cb) {
-  var query = knex('changes')
+Changes.getSize = function(db, changeSetName, cb) {
+  var query = db('changes')
                 .where('changeset', changeSetName)
                 .count();
   query.asCallback(function(err, count) {
@@ -42,11 +41,11 @@ Changes.getSize = function(changeSetName, cb) {
 // Takes a changes array or object and turns it into SQL compatible
 // representation.
 //
-var serializeChanges = function(changes, set, user, cb) {
+var serializeChanges = function(db, changes, set, user, cb) {
   changes = _.isArray(changes) ? changes : [changes];
   var serialized = [];
 
-  Changes.getSize(set, function(err, counter) {
+  Changes.getSize(db, set, function(err, counter) {
     if(err) return cb(err);
     _.each(changes, function(change, pos){
       var record = {

@@ -1,4 +1,4 @@
-var knex = require('./connect');
+//var knex = require('./connect');
 
 // Initialize knex connection
 // --------------
@@ -13,5 +13,5 @@ var models = {
 // export connection
 module.exports = {
   models: models,
-  knex: knex
+  //knex: knex
 };
