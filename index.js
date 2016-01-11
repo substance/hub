@@ -7,7 +7,7 @@ var hub = {};
 // It gets removed when no session is active anymore
 // var activeSessions = {};
 
-hub.connect = function(expressApp, port) {
+hub.connect = function(app, port) {
   var server = http.createServer();
   var wss = new WebSocketServer({ server: server });
   // wss.on('connection', transport.register);
@@ -20,7 +20,7 @@ hub.connect = function(expressApp, port) {
     ws.send('hello');
   });
 
-  server.on('request', expressApp);
+  server.on('request', app);
   server.listen(port, function () { console.log('Listening on ' + server.address().port); });
   return wss;
 };
